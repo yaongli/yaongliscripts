@@ -54,11 +54,16 @@ class UrlDownload(object):
         self.mkdir(self.resultFolder)
         self.mainpage = "template.html"
         self.resdir = "resources"
+        self.local2urlmap = {}
 
     def execute(self):
         self.download(self.targetUrl, self.mainpage)
+        print "The main html file has been download to %s, before download refrence resources, you handle this file." % os.path.join(self.orginFolder, self.mainpage)
+        raw_input("Press ENTER to continue to download refrence resources:[Enter]")
+        
         mainContent = self.readFile(os.path.join(self.orginFolder, self.mainpage))
         mainContent = self.handleBaseHref(mainContent)
+        mainContent = self.removeCanonical(mainContent)
         mainContent = self.down4js(mainContent)
         mainContent = self.down4css(mainContent)
         mainContent = self.down4img(mainContent)
@@ -68,6 +73,11 @@ class UrlDownload(object):
         #todo favicon: <link rel="shortcut icon" href="/np/clients/test/resources/favicon.ico" />
         #todo form action url :<form action="search.html?L=0" 
         self.writeFile(os.path.join(self.resultFolder, self.mainpage), mainContent)
+
+    def removeCanonical(self, content):
+        #<link rel="canonical" href="http://www.example.com/product.php?item=swedish-fish"/>
+        content = re.sub(r"<link rel=[\"\']?canonical[\"\']?.*?>", "", content, flags=re.I)
+        return content 
 
     def handleBaseHref(self, content):
         #<base href="http://www.anthroposophy.org/" />
@@ -92,9 +102,14 @@ class UrlDownload(object):
     
     def replace(self, content, replacelist):
         pprint(replacelist)
+        #clear the duplicated
+        replaceMap = {}
         for (old, new) in replacelist:
-            if old != None and new != None:
-                content = content.replace(old, new)
+            if old != None and new != None and old.strip() != "":
+                replaceMap[old] = new
+
+        for (old, new) in replaceMap.items():
+            content = content.replace(old, new)
         return content
 
     def copyrestree(self, resfolder):
@@ -213,7 +228,11 @@ class UrlDownload(object):
         #<li class="royalSlide" data-src="http://ecsonline.org/wp-content/uploads/2012/09/partners-1.jpg"></li>
         reglist = [r"""<img.*?src=[\'\"](.*?)[\'\"]""", 
                    r"""<link rel="[^\"]*icon".*?href=[\'\"](.*?)[\'\"]""",
-                   r"""data-src=[\'\"](.*?\.jpg)[\'\"]""", r"""data-src=[\'\"](.*?\.png)[\'\"]""", r"""data-src=[\'\"](.*?\.gif)[\'\"]""",
+                   r"""data-src=[\'\"](.*?\.jpg)[\'\"]""",
+                   r"""data-src=[\'\"](.*?\.jpeg)[\'\"]""",  
+                   r"""data-src=[\'\"](.*?\.png)[\'\"]""", 
+                   r"""data-src=[\'\"](.*?\.gif)[\'\"]""",
+                   r"""url\([\'\"](.*?)[\'\"]\)""",
                    #r"\"([^\"]*?\.jpg)\"", r"\"([^\"]*?\.gif)\"",r"\"([^\"]*?\.png)\"",
                    #r"\'([^\']*?\.jpg)\'", r"\'([^\']*?\.gif)\'",r"\'([^\']*?\.png)\'",
                    ]
@@ -222,25 +241,44 @@ class UrlDownload(object):
             urllist += re.findall(regstr, content, flags=re.I|re.M)
         return urllist
 
-    def download(self, url, filename):
+    def download(self, url, filename, original_url=None):
+        if original_url == None:
+            original_url = url
         print "download from ", url
-        print "save as ",filename,"        ",
-        if not os.path.exists(os.path.dirname(self.orginFolder + "/" + filename)):
-            self.mkdir(os.path.dirname(self.orginFolder + "/" + filename))
-        if os.path.exists(self.orginFolder + "/" + filename):
-            print ""
-            print "[ERROR] file %s already exist." % filename
-            return False
-        
-        try:
-            def reporthook(block_count, block_size, file_size):
-                print ".",
-            urllib.urlretrieve(url, self.orginFolder + "/" + filename, reporthook)
-            print "\t\t[OK]"
-        except:
-            print "[ERROR]Failed to download ", url
-            return False
-        return True
+        dlfilepath = self.orginFolder + "/" + filename
+        print "save as ",dlfilepath,"        ",
+        if not os.path.exists(os.path.dirname(dlfilepath)):
+            self.mkdir(os.path.dirname(dlfilepath))
+        (dlfilepathname, dlfilepathext) = os.path.splitext(dlfilepath)
+        (filenamebase, filenameext) = os.path.splitext(filename)
+        extCount = 1
+        while os.path.exists(dlfilepath):
+            oldurl = self.local2urlmap.get(dlfilepath)
+            if oldurl and oldurl == url:
+                print "File %s already exist with same url. " % dlfilepath
+                return (original_url, filename)
+            else:
+                print "File %s already exist but with different url. " % dlfilepath
+                dlfilepath = dlfilepathname + "_" + str(extCount) + dlfilepathext
+                filename = filenamebase + "_" + str(extCount) + filenameext
+                print "Change name to %s and try again." % dlfilepath
+                extCount += 1
+
+        tryCount = 0
+        while True:
+            try:
+                def reporthook(block_count, block_size, file_size):
+                    print ".",
+                urllib.urlretrieve(url, dlfilepath, reporthook)
+                self.local2urlmap[dlfilepath] = url
+                print "\t\t[OK]"
+                return (original_url, filename)
+            except:
+                tryCount += 1
+                print "[WARNING]Failed to download %s for the %s try." % (url, tryCount)
+                if tryCount > 3:
+                    print "[ERROR] Failed to download %s after the %s times try." % (url, tryCount)
+                    return (None, None)
 
     def downtofolder(self, url, folder):
         (original_url, url, filename, param) = self.tidyurl(url)
@@ -249,10 +287,7 @@ class UrlDownload(object):
             param = param.replace("?","_").replace("#","_").replace("&","_")
             filename = filename[0: filename.rfind(".")] + param + filename[filename.rfind("."): ]
         filepath = folder + "/" + filename
-        isOK = self.download(url, filepath)
-        if not isOK:
-            return (None, None)
-        return (original_url, filepath)
+        return self.download(url, filepath, original_url)
 
     def mkdir(self, dirpath):
         os.makedirs(dirpath)

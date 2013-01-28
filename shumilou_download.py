@@ -116,4 +116,4 @@ if __name__ == "__main__":
     downloadbook(bookName, bookNum)
     #chapter = Chapter(u"testtest", "http://www.shumilou.com/guanchangzhifengliurensheng/953681.html", None, None)
     #content = queryContent(chapter)
-    writeContent(content)
+    #writeContent(content)
