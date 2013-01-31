@@ -1,0 +1,452 @@
+/* NEON.LIGHT.VERSION */
+.neon_C_content{
+margin:0px;
+}
+.neon_C_content form{
+clear:both;
+}
+/* @group Reset */
+.neon_C_content ol,
+.neon_C_content ul{
+list-style:none;
+}
+/* remember to define focus styles! */
+:focus{
+outline:0;
+}
+/* remember to highlight inserts somehow! */
+.neon_C_content ins{
+text-decoration:none;
+}
+.neon_C_content del{
+text-decoration:line-through;
+}
+.neon_C_content test{
+border-bottom:;
+border-style:dotted;
+border-width:.1em;
+}
+/* tables still need 'cellspacing="0"' in the markup  */
+.neon_C_content table{
+border-collapse:collapse;
+border-spacing:0;
+}
+.neon_C_content table,
+.neon_C_content td,
+.neon_C_content th{
+white-space:inherit !important;
+}
+.neon_C_content table{
+margin:0px auto;
+}
+/* @group Main */
+.neon_C_content{
+font-family:Verdana;
+word-wrap:break-word;
+color:#000000;
+padding:15px;
+}
+.neon_C_content a,
+.neon_C_content  a:link,
+.neon_C_content  a:visited,
+.neon_C_content  a:hover,
+.neon_C_content  a:active{
+color:#696969;
+outline:medium none;
+text-decoration:none;
+cursor:pointer;
+font-weight:bold;
+}
+.neon_C_content a:hover{
+color:#778899;
+text-decoration:none;
+}
+.neon_C_content img{
+border:none;
+}
+.neon_C_content input,
+.neon_C_content select,
+.neon_C_content textarea{
+vertical-align:middle;
+width:auto !important;
+}
+.neon_C_content td.curFocus{
+background:#fdecb2;
+}
+.neon_C_content table.autoCommon{
+width:100% !important;
+}
+.neon_C_content .col-1{
+margin:0px auto;
+width:960px;
+Z-INDEX:100 !important;
+font-size:12px;
+line-height:25px;
+}
+.neon_C_content td{
+color:#000000;
+word-WRAP:break-word;
+white-space:normal;
+}
+.neon_C_content table.reportLook td{
+color:#000000;
+word-WRAP:break-word !important;
+white-space:normal !important;
+}
+/*****************/
+/************************font-family********************************/
+.neon_C_content select,
+.neon_C_content .neonBody,
+.neon_C_content input,
+.neon_C_content .neon2Title,
+.neon_C_content .neon2Header,
+.neon_C_content .neonFieldLabel,
+.neon_C_content  .neonFieldLabel sup,
+.neon_C_content  .neonButton,
+.neon_C_content  .neon2Field,
+.neon_C_content  .neon2Field2,
+.neon_C_content  .neon2Menu,
+.neon_C_content  .neon2MenuLink,
+.neon_C_content table.search,
+.neon_C_content table.reportLook,
+.neon_C_content table.reportLook td,
+.neon_C_content table.reportLook th,
+.neon_C_content div.jobPost,
+.neon_C_content .neonFooter,
+.neon_C_content .box_404_table,
+.neon_C_content .neonCheckbox,
+.neon_C_content td,
+.neon_C_content table.reportLook th,
+.neon_C_content .neonFieldText,
+.neon_C_content .neonTableHeaderCell,
+.neon_C_content .neonRadioInput,
+.neon_C_content .neonConfirmText,
+.neon_C_content .neon2listText{
+font-family: Arial, Verdana, Helvetica, sans-serif;
+}
+/************************color********************************/
+.neon_C_content .neon2Title,
+.neon_C_content .neon2Header,
+.neon_C_content .neon2MenuLink,
+.neon_C_content .header,
+.neon_C_content .contentHeader,
+.neon_C_content h3,
+.neon_C_content .title_text,
+.neon_C_content .neon2listText{
+	color: #333366;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	font-size: 18px;
+	font-weight: bold;
+}
+.neon_C_content .neonFieldLabel,
+.neon_C_content .neon2Field,
+.neon_C_content .neonTableCell,
+.neon_C_content .normal,
+.neon_C_content .neonValidate,
+.neon_C_content .small,
+.neon_C_content div.jobPost table td,
+.neon_C_content .neon2Field2,
+.neon_C_content table.reportLook,
+.neon_C_content .neonCheckbox,
+.neon_C_content .neonFieldText,
+.neon_C_content div.membershipDirectory table td,
+.neon_C_content select,
+.neon_C_content input,
+.neon_C_content textarea,
+.neon_C_content .neonRadioInput,
+.neon_C_content .neonTableHeaderCell,
+.neon_C_content .neonBody{
+	color: #333366;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	font-weight: normal;
+}
+.neon_C_content .textBold,
+.sectionHeader{
+color:#333333;
+font-weight:normal;
+}
+.neon_C_content a.neon2Link,
+.neon_C_content a.neon2Link:link,
+.neon_C_content a.neon2Link:visited,
+.neon_C_content a.neon2Link:hover,
+.neon_C_content a.neon2Link:active,
+.neon_C_content .neonFieldLabel a,
+.neon_C_content .neonFieldLabel a:link,
+.neon_C_content .neonFieldLabel a:visied,
+.neon_C_content .neonFieldLabel a:hover,
+.neon_C_content .neonFieldLabel a:active{
+color:#009FCB !important;
+}
+.neon_C_content .neonFooter{
+font-size:12px !important;
+font-style:normal;
+font-weight:normal;
+line-height:10px;
+text-decoration:none;
+}
+.neon_C_content .table_bg_caption{
+background-color:#CCCCCC !important;
+}
+.neon_C_content .table_bg_light{
+background-color:#EEEEEE !important;
+}
+.neon_C_content .table_bg_dark{
+background-color:#DDDDDD !important;
+}
+.neon_C_content .neonValidate{
+color:red !important;
+}
+.neon_C_content .photo_app{
+color:red;
+}
+/**
+.neon_C_content table.search,.neon_C_content div.jobPost,.neon_C_content table.reportLook{
+background-color:#000000 !important;
+}
+**/
+.neon_C_content div.jobPost,
+.neon_C_content table.reportLook{
+background-color:#ffffff !important;
+}
+/************************font-size********************************/
+.neon_C_content td,
+.neon_C_content table.reportLook td,
+.neon_C_content td.neonFieldLabel,
+.neon_C_content td.neonFieldText,
+.neon_C_content .textSmall,
+.neon_C_content th,
+.neon_C_content div.total{
+line-height:30px;
+vertical-align:top;
+font-size:12px;
+}
+.neon_C_content .neon2Header{
+height: 44px;
+}
+/**********************************/
+.neon_C_content .neon2Title{
+font-size:16px;
+font-weight:bold;
+}
+/**********************************/
+.neon_C_content .neon2Link,
+.neon_C_content #buttonDisplay a,
+.neon_C_content .neonFieldLabel,
+.neon_C_content .neon2Field,
+.neon_C_content .neonTableCell,
+.neon_C_content .normal,
+.neon_C_content .neonValidate,
+.neon_C_content .neonTableHeaderCell,
+.neon_C_content .neon2Field2,
+.neon_C_content .neonFieldText,
+.neon_C_content .neonValidate,
+.neon_C_content table.search td,
+.neon_C_content .neonCheckbox,
+.neon_C_content .neonRadioInput,
+.neon_C_content .neon2listText{
+font-size:13px !important;
+}
+.neon_C_content .reportLook0 td,
+.neon_C_content .reportLookHilite td,
+.neon_C_content .actionLink,
+.neon_C_content table.reportLook a,
+.neon_C_content table.reportLook th,
+.neon_C_content .shopping_C td p,
+.neon_C_content table.reportLook td,
+.neon_C_content .small{
+font-size:12px !important;
+}
+.neon_C_content #buttonDisplay{
+padding-top:10px;
+}
+.neon_C_content .neonTableCell{
+padding:0px;
+}
+.neon_C_content .neonTableHeaderCell{
+color:#666;
+font-weight:bold;
+}
+.neon_C_content .neon2Title{
+padding:15px 0px 10px 0px;
+}
+.neon_C_content h3{
+margin:20px 0px 20px 0px;
+}
+.neon_C_content #5_options_div_2,
+.neon_C_content #8_options_div_2{
+text-align:right !important;
+}
+.neon_C_content table.reportLook{
+border:none;
+font-size:12px !important;
+}
+.neon_C_content .reportLook0 td,
+.neon_C_content .reportLookHilite td{
+border:none;
+}
+.neon_C_content table.reportLook img{
+border:0 none;
+text-align:left;
+vertical-align:middle;
+}
+.neon_C_content #photoDisplay td{
+padding:5px;
+}
+.neon_C_content table.reportLook tr th,
+.neon_C_content  table.reportLook tr td{
+padding:0px !important;
+}
+.neon_C_content table.reportLook th{
+background:url("icon-sort.gif") no-repeat scroll 0 0 #EBEBEB;
+color:#666666;
+font-weight:bold;
+padding:0px !important;
+text-align:center;
+vertical-align:middle;
+}
+.neon_C_content table.reportLook,
+.neon_C_content table.reportLook td,
+.neon_C_content  table.reportLook th{
+white-space:nowrap !important;
+}
+/*****************************input text  password  select  textarea********************************/
+.neon_C_content input[type="text"],
+.neon_C_content input[type="password"],
+.neon_C_content select,
+.neon_C_content textarea,
+.neon_C_content input[type="file"],
+.neon_C_content input.neonFieldText,
+.neon_C_content input.neon2Field{
+/*border-radius*/
+-webkit-border-radius:5px;
+   -moz-border-radius:5px;
+        border-radius:5px;
+-webkit-box-sizing:border-box;
+-moz-box-sizing:border-box;
+box-sizing:border-box;
+/*background-clip*/
+-webkit-background-clip:padding-box;
+   -moz-background-clip:/*@@prefixmycss->No equivalent*/;
+        background-clip:padding-box;
+border-color:#848484 #C1C1C1 #E1E1E1;
+border-style:solid;
+border-width:1px;
+outline:0;
+padding:2px 3px;
+font-size:13px;
+height:1.8em;
+*height:auto;
+_padding:0px;
+}
+.neon_C_content input[type="text"],
+.neon_C_content input[type="password"],
+.neon_C_content select,
+.neon_C_content .col-1 textarea,
+.neon_C_content input[type="password"],
+.neon_C_content input[type="file"],
+.neon_C_content input.neonFieldText{
+color:#333;
+background-color:#fff;
+}
+.neon_C_content textarea{
+min-height:80px;
+overflow:auto;
+resize:vertical;
+}
+.neon_C_content input[type="text"]:hover,
+.neon_C_content input[type="password"]:hover,
+.neon_C_content select:hover,
+.neon_C_content textarea:hover,
+.neon_C_content input[type="file"]:hover{
+border:solid 1px #1C5180;
+background-color:#fffbdc;
+}
+.neon_C_content input[type="text"]:focus,
+.neon_C_content input[type="password"]:focus,
+.neon_C_content textarea:focus,
+.neon_C_content select:focus{
+border:solid 1px #1C5180 !important;
+background-color:#fffbdc !important;
+}
+.neon_C_content input[type="submit"],
+.neon_C_content  .neonButton,
+.neon_C_content #button,
+.neon_C_content  a.button,
+.neon_C_content  input[type="button"],
+.neon_C_content input[type="submit"],
+.neon_C_content .button{
+color:#FFFFFF !important;
+background: #0DA7D4 !important;
+/*border-radius*/
+-webkit-border-radius:8px 8px 8px 8px;
+   -moz-border-radius:8px 8px 8px 8px;
+        border-radius:8px 8px 8px 8px;
+border:0 none;
+cursor:pointer;
+height:30px;
+margin-bottom:10px;
+margin-top:10px;
+padding-left:10px;
+padding-right:10px;
+border:none;
+font-size:14px !important;
+font-weight:bold;
+text-transform:uppercase;
+}
+.neon_C_content input[type="submit"]:hover,
+.neon_C_content .neonButton:hover,
+.neon_C_content #button,
+.neon_C_content  a.button,
+.neon_C_content  input[type="button"]:hover,
+.neon_C_content input[type="submit"]:hover,
+.neon_C_content .button{
+border:none !important;
+color:#FFFFFF !important;
+}
+.neon_C_content .membershipDirectory{
+width:100%;
+background-color:transparent;
+}
+/**************************************************************/
+.neon_C_content table.search td{
+border:none !important;
+}
+/*shopping cart*/
+.neon_C_content .out_table_S td{
+padding:10px;
+}
+.neon_C_content .shopping_C td{
+padding:0px 5px;
+}
+.neon_C_content .shopping_C td p{
+line-height:25px;
+}
+.neon_C_content .neonFieldLabel sup{
+line-height:30px;
+}
+.neon_C_content .neonCheckbox{
+line-height:20px !important;
+}
+
+.neon_C_content .neonBody{font-size:13px !important;}
+.neon_C_content table.search{background:transparent !important;}
+.neon_C_content div.membershipDirectory div.total{
+text-align:center;
+}
+.neon_C_content table.reportLook{margin:0 auto !important;}
+
+.neon_C_content input[type="checkbox"],
+.neon_C_content input[type="radio"]{
+	border: 0;
+}
+
+.neon_C_content  .neonLine {
+	background-color: transparent;
+	border-bottom-color: #3A5A7A;
+	border-bottom-style: solid;
+	border-bottom-width: 2px;
+	padding: 0;
+	margin: 0;
+	line-height: 1px;
+	height: 1px;
+}
