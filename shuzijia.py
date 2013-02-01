@@ -37,7 +37,7 @@ def getChapterPage(linkurl):
     bs = bs4.BeautifulSoup(content)
     cbs = bs.find("div", {"id": "content"})
     if cbs:
-        cc = cbs.text
+        cc = cbs.text.encode("utf-8")
         with open("text.txt", "wb") as f:
             f.write(cc)
             f.flush()
