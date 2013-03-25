@@ -14,7 +14,7 @@ def clean_element(element_name, content):
 def usps_intl_rate(country, origin_zip="18701", pounds="0", ounces="0", valueofcontents="0.0"):
     shipping_uri = "http://production.shippingapis.com/ShippingAPI.dll?API=IntlRateV2&XML="
     userid = "718Z2SYS3029"
-    xml_request_template = "<IntlRateV2Request USERID=\"%(USERID)s\"><Revision>2</Revision><Package ID=\"1ST\"><Pounds>%(Pounds)s</Pounds><Ounces>%(Ounces)s</Ounces><Machinable>True</Machinable><MailType>Package</MailType><ValueOfContents>%(ValueOfContents)s</ValueOfContents><Country>%(Country)s</Country><Container>RECTANGULAR</Container><Size>REGULAR</Size><Width>0</Width><Length>0</Length><Height>0</Height><Girth>0</Girth><OriginZip>%(OriginZip)s</OriginZip></Package></IntlRateV2Request>"
+    xml_request_template = "<IntlRateV2Request USERID=\"%(USERID)s\"><Revision>2</Revision><Package ID=\"1ST\"><Pounds>%(Pounds)s</Pounds><Ounces>%(Ounces)s</Ounces><Machinable>True</Machinable><MailType>All</MailType><ValueOfContents>%(ValueOfContents)s</ValueOfContents><Country>%(Country)s</Country><Container>RECTANGULAR</Container><Size>REGULAR</Size><Width>0</Width><Length>0</Length><Height>0</Height><Girth>0</Girth><OriginZip>%(OriginZip)s</OriginZip></Package></IntlRateV2Request>"
     param = {"USERID" : userid,
             "Pounds": pounds,
             "Ounces": ounces,
