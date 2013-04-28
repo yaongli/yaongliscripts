@@ -8,7 +8,7 @@ import subprocess
 class DownloadTemplateFrame(wx.Frame):
     def __init__(self, parent):
         wx.Frame.__init__(self, id=wx.NewId(), name='DownloadTemplateFrame', parent=parent,
-              size=wx.Size(500, 500),
+              size=wx.Size(460, 600),
               style=wx.DEFAULT_FRAME_STYLE, title='Download Template')
 
         self.panel = wx.Panel(id=wx.NewId(), name='panel', parent=self,
@@ -34,7 +34,7 @@ class DownloadTemplateFrame(wx.Frame):
 
         LINE_POS += LINE_HEIGHT
         self.instanceText = wx.TextCtrl(id=wx.NewId(),
-              name='instanceText', parent=self.panel, pos=wx.Point(LEFT_POS, LINE_POS), size=wx.Size(200, -1), value='')
+              name='instanceText', parent=self.panel, pos=wx.Point(LEFT_POS, LINE_POS), size=wx.Size(200, -1), value='test')
         self.instanceText.SetToolTipString('Instance name in NEONCRM')
 
         LINE_POS += LINE_HEIGHT
@@ -96,14 +96,48 @@ class DownloadTemplateFrame(wx.Frame):
         self.dbportText = wx.TextCtrl(id=wx.NewId(),
               name='dbportText', parent=self.panel, pos=wx.Point(LEFT_POS + 300, LINE_POS), size=wx.Size(100, -1), value='3306')
 
-        self.executeBtn = wx.Button(id=wx.NewId(), label='Start',
-              name='executeBtn', parent=self.panel, pos=wx.Point(200, 400),
+        LINE_POS += (LINE_HEIGHT)
+        self.executeBtn = wx.Button(id=wx.NewId(), label='Start Download',
+              name='executeBtn', parent=self.panel, pos=wx.Point(180, LINE_POS),
               style=0)
 
         self.Bind(wx.EVT_BUTTON, self.OnDownload, self.executeBtn)
 
+        LINE_POS += LINE_HEIGHT
+        self.logLabel = wx.StaticText(id=wx.NewId(),
+              label='Output', name='logLabel',
+              parent=self.panel, pos=wx.Point(LEFT_POS, LINE_POS), style=0)
+        LINE_POS += LINE_HEIGHT
+        self.logText = wx.TextCtrl(self.panel, -1, "", pos=wx.Point(LEFT_POS, LINE_POS),
+                        size=(400, 150), style=wx.TE_MULTILINE|wx.HSCROLL|wx.TE_RICH2|wx.HSCROLL)
+
+    def GetValue(self):
+        self.siteUrl = self.siteurlText.GetValue().strip()
+        self.instanceName = self.instanceText.GetValue().strip()
+        self.isCopyToTomcat = self.copyToTomcatCheckbox.GetValue()
+        self.isAddDataSource = self.addJbossMysqlDSCheckbox.GetValue()
+        self.TOMCAT_HOME = self.tomcatHomeText.GetValue().strip()
+        self.JBOSS_HOME = self.jbossHomeText.GetValue().strip()
+        self.dbName = self.dbnameText.GetValue().strip()
+        self.dbHost = self.dbhostComboBox.GetValue().strip()
+        self.dbPort = self.dbportText.GetValue().strip()
+        self.PrintValue()
+
+    def PrintValue(self):
+        print self.siteUrl 
+        print self.instanceName 
+        print self.isCopyToTomcat 
+        print self.isAddDataSource 
+        print self.TOMCAT_HOME 
+        print self.JBOSS_HOME 
+        print self.dbName 
+        print self.dbHost 
+        print self.dbPort
+
     def OnDownload(self, evt):
-        pass
+        self.GetValue()
+
+     
 
 class DownloadTemplateApp(wx.App):
     def __init__(self, redirect=True, filename=None):
@@ -111,6 +145,7 @@ class DownloadTemplateApp(wx.App):
        
     def OnInit(self):
         self.frame = DownloadTemplateFrame(None)
+        self.frame.Center()
         self.frame.Show()
         return True
 
