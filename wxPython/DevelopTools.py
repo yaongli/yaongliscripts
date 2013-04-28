@@ -64,7 +64,7 @@ def GetMondrianIcon():
     return icon
 
 
-class PyAUIFrame(wx.Frame):
+class DevelopToolsFrame(wx.Frame):
     
     def __init__(self, parent, id=-1, title="", pos=wx.DefaultPosition,
                  size=wx.DefaultSize, style=wx.DEFAULT_FRAME_STYLE |
@@ -142,7 +142,7 @@ class PyAUIFrame(wx.Frame):
         self.statusbar = self.CreateStatusBar(2, wx.ST_SIZEGRIP)
         self.statusbar.SetStatusWidths([-2, -3])
         self.statusbar.SetStatusText("Ready", 0)
-        self.statusbar.SetStatusText("Welcome To wxPython!", 1)
+        self.statusbar.SetStatusText("Develop Tools", 1)
 
         # min size for the frame itself isn't completely done.
         # see the end up FrameManager::Update() for the test
@@ -160,63 +160,6 @@ class PyAUIFrame(wx.Frame):
         tb1.AddLabelTool(103, "Test", wx.ArtProvider_GetBitmap(wx.ART_WARNING))
         tb1.AddLabelTool(103, "Test", wx.ArtProvider_GetBitmap(wx.ART_MISSING_IMAGE))
         tb1.Realize()
-
-        tb2 = wx.ToolBar(self, -1, wx.DefaultPosition, wx.DefaultSize,
-                         wx.TB_FLAT | wx.TB_NODIVIDER)
-        tb2.SetToolBitmapSize(wx.Size(16,16))
-        tb2_bmp1 = wx.ArtProvider_GetBitmap(wx.ART_QUESTION, wx.ART_OTHER, wx.Size(16, 16))
-        tb2.AddLabelTool(101, "Test", tb2_bmp1)
-        tb2.AddLabelTool(101, "Test", tb2_bmp1)
-        tb2.AddLabelTool(101, "Test", tb2_bmp1)
-        tb2.AddLabelTool(101, "Test", tb2_bmp1)
-        tb2.AddSeparator()
-        tb2.AddLabelTool(101, "Test", tb2_bmp1)
-        tb2.AddLabelTool(101, "Test", tb2_bmp1)
-        tb2.AddSeparator()
-        tb2.AddLabelTool(101, "Test", tb2_bmp1)
-        tb2.AddLabelTool(101, "Test", tb2_bmp1)
-        tb2.AddLabelTool(101, "Test", tb2_bmp1)
-        tb2.AddLabelTool(101, "Test", tb2_bmp1)
-        tb2.Realize()
-       
-        tb3 = wx.ToolBar(self, -1, wx.DefaultPosition, wx.DefaultSize,
-                         wx.TB_FLAT | wx.TB_NODIVIDER)
-        tb3.SetToolBitmapSize(wx.Size(16,16))
-        tb3_bmp1 = wx.ArtProvider_GetBitmap(wx.ART_FOLDER, wx.ART_OTHER, wx.Size(16, 16))
-        tb3.AddLabelTool(101, "Test", tb3_bmp1)
-        tb3.AddLabelTool(101, "Test", tb3_bmp1)
-        tb3.AddLabelTool(101, "Test", tb3_bmp1)
-        tb3.AddLabelTool(101, "Test", tb3_bmp1)
-        tb3.AddSeparator()
-        tb3.AddLabelTool(101, "Test", tb3_bmp1)
-        tb3.AddLabelTool(101, "Test", tb3_bmp1)
-        tb3.Realize()
-
-        tb4 = wx.ToolBar(self, -1, wx.DefaultPosition, wx.DefaultSize,
-                         wx.TB_FLAT | wx.TB_NODIVIDER | wx.TB_HORZ_TEXT)
-        tb4.SetToolBitmapSize(wx.Size(16,16))
-        tb4_bmp1 = wx.ArtProvider_GetBitmap(wx.ART_NORMAL_FILE, wx.ART_OTHER, wx.Size(16, 16))
-        tb4.AddLabelTool(101, "Item 1", tb4_bmp1)
-        tb4.AddLabelTool(101, "Item 2", tb4_bmp1)
-        tb4.AddLabelTool(101, "Item 3", tb4_bmp1)
-        tb4.AddLabelTool(101, "Item 4", tb4_bmp1)
-        tb4.AddSeparator()
-        tb4.AddLabelTool(101, "Item 5", tb4_bmp1)
-        tb4.AddLabelTool(101, "Item 6", tb4_bmp1)
-        tb4.AddLabelTool(101, "Item 7", tb4_bmp1)
-        tb4.AddLabelTool(101, "Item 8", tb4_bmp1)
-        tb4.Realize()
-
-        tb5 = wx.ToolBar(self, -1, wx.DefaultPosition, wx.DefaultSize,
-                         wx.TB_FLAT | wx.TB_NODIVIDER | wx.TB_VERTICAL)
-        tb5.SetToolBitmapSize(wx.Size(48, 48))
-        tb5.AddLabelTool(101, "Test", wx.ArtProvider_GetBitmap(wx.ART_ERROR)) 
-        tb5.AddSeparator()
-        tb5.AddLabelTool(102, "Test", wx.ArtProvider_GetBitmap(wx.ART_QUESTION))
-        tb5.AddLabelTool(103, "Test", wx.ArtProvider_GetBitmap(wx.ART_INFORMATION))
-        tb5.AddLabelTool(103, "Test", wx.ArtProvider_GetBitmap(wx.ART_WARNING))
-        tb5.AddLabelTool(103, "Test", wx.ArtProvider_GetBitmap(wx.ART_MISSING_IMAGE))
-        tb5.Realize()
 
         # add a bunch of panes
         self._mgr.AddPane(self.CreateSizeReportCtrl(), wx.aui.AuiPaneInfo().
@@ -291,26 +234,6 @@ class PyAUIFrame(wx.Frame):
                           Name("tb1").Caption("Big Toolbar").
                           ToolbarPane().Top().
                           LeftDockable(False).RightDockable(False))
-
-        self._mgr.AddPane(tb2, wx.aui.AuiPaneInfo().
-                          Name("tb2").Caption("Toolbar 2").
-                          ToolbarPane().Top().Row(1).
-                          LeftDockable(False).RightDockable(False))
-                      
-        self._mgr.AddPane(tb3, wx.aui.AuiPaneInfo().
-                          Name("tb3").Caption("Toolbar 3").
-                          ToolbarPane().Top().Row(1).Position(1).
-                          LeftDockable(False).RightDockable(False))
-                      
-        self._mgr.AddPane(tb4, wx.aui.AuiPaneInfo().
-                          Name("tb4").Caption("Sample Bookmark Toolbar").
-                          ToolbarPane().Top().Row(2).
-                          LeftDockable(False).RightDockable(False))
-
-        self._mgr.AddPane(tb5, wx.aui.AuiPaneInfo().
-                          Name("tbvert").Caption("Sample Vertical Toolbar").
-                          ToolbarPane().Left().GripperTop().
-                          TopDockable(False).BottomDockable(False))
                       
         self._mgr.AddPane(wx.Button(self, -1, "Test Button"),
                           wx.aui.AuiPaneInfo().Name("tb5").
@@ -1101,7 +1024,7 @@ class TestPanel(wx.Panel):
         self.Bind(wx.EVT_BUTTON, self.OnButton, b)
 
     def OnButton(self, evt):
-        frame = PyAUIFrame(self, wx.ID_ANY, "wx.aui wxPython Demo", size=(750, 590))
+        frame = DevelopToolsFrame(self, wx.ID_ANY, "wx.aui wxPython Demo", size=(750, 590))
         frame.Show()
 
 #----------------------------------------------------------------------
@@ -1145,7 +1068,7 @@ class DevelopToolsApp(wx.App):
         wx.App.__init__(self, redirect, filename)
        
     def OnInit(self):
-        self.frame = PyAUIFrame(None, wx.ID_ANY, "Develop Tools", size=(750, 590))
+        self.frame = DevelopToolsFrame(None, wx.ID_ANY, "Develop Tools", size=(750, 590))
         self.frame.Show()
         return True
     def OnExit(self):
