@@ -1,4 +1,4 @@
-# -*- coding:utf-8 -*-
+﻿# -*- coding:utf-8 -*-
 import wx
 import os
 import sys
@@ -6,15 +6,33 @@ import re
 from wsync import UrlDownload
 import mysqlds
 import shutil
+import threading
+import Queue
+import traceback
+from wxPython.wx import *
+from wxPython.lib import newevent
 #avoid Encoding Problem
 reload(sys)
 sys.setdefaultencoding('utf-8')  
 
-class DownloadTemplateFrame(wx.Frame):
+DispatchEvent, EVT_DISPATCH = newevent.NewEvent()
+
+class GenericDispatchMixin:
+    def __init__(self):
+        EVT_DISPATCH(self, self.OnDispatchEvent)
+
+    def OnDispatchEvent(self, event):
+        event.method(*event.arguments)
+
+    def ThreadSafeDispatch(self, method, *arguments):
+        wxPostEvent(self, DispatchEvent(method = method, arguments = arguments))
+
+class DownloadTemplateFrame(wx.Frame, GenericDispatchMixin):
     def __init__(self, parent):
         wx.Frame.__init__(self, id=wx.NewId(), name='DownloadTemplateFrame', parent=parent,
               size=wx.Size(460, 600),
               style=wx.DEFAULT_FRAME_STYLE, title='Download Template')
+        GenericDispatchMixin.__init__(self)
 
         self.panel = wx.Panel(id=wx.NewId(), name='panel', parent=self,
               pos=wx.Point(0, 0), size=wx.Size(-1, -1),
@@ -117,7 +135,11 @@ class DownloadTemplateFrame(wx.Frame):
                         size=(400, 150), style=wx.TE_MULTILINE|wx.HSCROLL|wx.TE_RICH2|wx.HSCROLL)
                         
     def write(self, *args, **kwargs):
-        self.logText.AppendText("".join(args))
+        message = "[STDOUT]" + "\n".join(args)
+        threading.Thread(target=self.appendLog, args=(message,)).start()
+
+    def appendLog(self, message):
+        self.logText.AppendText(message)
         
     def MessageBox(self, message):
         dlg = wx.MessageDialog(None, message, "Message", wx.OK | wx.ICON_INFORMATION)
@@ -177,11 +199,10 @@ class DownloadTemplateFrame(wx.Frame):
         try:
             self.executeBtn.Disable()
             print "Begin to download web template ..."
-            dl = UrlDownload(self.siteUrl)
-            dl.execute()
-            #thread1 = Thread(target = dl.execute)
-            #thread1.start()
-            #thread1.join()
+            self.t = TRun(self)
+            self.t.setDaemon(True)
+            self.t.start()
+            self.t.join()
             print "End to download web template"
             
             if self.isCopyToTomcat:
@@ -191,9 +212,9 @@ class DownloadTemplateFrame(wx.Frame):
                     if os.path.exists(clientdir):
                         shutil.rmtree(clientdir)
                     os.makedirs(clientdir)
-                    shutil.copytree(dl.resultFolder, clientdir)
+                    shutil.copytree("temp/result/", clientdir)
                 except:
-                    print "[ERROR] Copy template to tomcat failed. From %s to %s" % (dl.resultFolder, clientdir)
+                    print "[ERROR] Copy template to tomcat failed. From %s to %s" % ("temp/result/", clientdir)
                 print "End to copy template to tomcat"
             
             if self.isAddDataSource:
@@ -212,7 +233,17 @@ class DownloadTemplateFrame(wx.Frame):
             print e
             self.MessageBox("Failed! Some errors occur." + e.message)
             
-        
+class TRun(threading.Thread):
+    def __init__(self, caller):
+        threading.Thread.__init__(self)
+        self.caller = caller
+        self.flag = True
+
+    def run(self):
+        self.dl = UrlDownload(self.caller.siteUrl)
+        self.dl.execute()
+
+
 class DownloadTemplateApp(wx.App):
     def __init__(self, redirect=True, filename=None):
         wx.App.__init__(self, redirect, filename)
