@@ -12,13 +12,12 @@ import os
 import glob
 import threading
 import time
-
 import signal
 from contextlib import contextmanager
 
 #avoid Encoding Problem
-reload(sys)
-sys.setdefaultencoding('utf-8')
+#reload(sys)
+#sys.setdefaultencoding('utf-8')
 
 WORKDIR = os.path.abspath(os.curdir)
 
@@ -46,7 +45,7 @@ class UrlDownload(object):
         self.targetUrl = targetUrl
         self.domainUrl = targetUrl[0: targetUrl.find("/", 10)] #https://mail.google.com/mail/#inbox  excludes // after http
         self.targetDir = targetUrl[0: targetUrl.rfind("/")]
-        self.folder = "UrlDownload"
+        self.folder = "temp"
         self.orginFolder = self.folder + "/download"
         self.resultFolder =self.folder + "/result"
         if os.path.exists(self.folder):
@@ -61,7 +60,7 @@ class UrlDownload(object):
     def execute(self):
         self.download(self.targetUrl, self.mainpage)
         print "The main html file has been download to %s, before download refrence resources, you handle this file." % os.path.join(self.orginFolder, self.mainpage)
-        raw_input("Press ENTER to continue to download refrence resources:[Enter]")
+        #raw_input("Press ENTER to continue to download refrence resources:[Enter]")
         
         mainContent = self.readFile(os.path.join(self.orginFolder, self.mainpage))
         mainContent = self.handleBaseHref(mainContent)
@@ -97,7 +96,7 @@ class UrlDownload(object):
         return content
     
     def addNeonCssfile(self, content):
-        shutil.copy(os.path.abspath(os.path.dirname(__file__)) + "/neon/" + "neon.css", self.resultFolder + "/" + self.resdir + "/" + "neon.css")
+        shutil.copy("neon/neon.css", self.resultFolder + "/" + self.resdir + "/" + "neon.css")
         neoncss = """\n<link rel="stylesheet" href="resources/neon.css" type="text/css"/>\n"""
         content = content.replace("</head>", neoncss + "</head>")
         return content

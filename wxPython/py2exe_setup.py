@@ -3,22 +3,25 @@
 from distutils.core import setup
 import py2exe
 
+zipfile = r"sharedlib.zip"
 includes = ["encodings", "encodings.*"]
-options = {"py2exe":
-                    {"compressed": 1,
+options = {"py2exe":{
+                     "compressed": 1,
                      "optimize": 2,
-                     "ascii": 1,
+                     "ascii": 0,
                      "includes":includes,
-                     "bundle_files": 1}
+                     "bundle_files": 2
+                    }
            }
 setup(
     options = options,
-    zipfile=None,
+    zipfile = zipfile,
     name = "Download Template",
     description = "Neon Tool",
     windows=[
-            {"script": "DownloadTemplate.py",
-             "icon_resources": [(1, "neon.ico"),(2, "import.ico")]
+            {
+             "script": "NeonTool.py",
+             "icon_resources": [(2, "neon.ico"),(1, "import.ico")]
             },
         ]
     )
