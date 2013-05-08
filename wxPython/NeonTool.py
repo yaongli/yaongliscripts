@@ -136,7 +136,7 @@ class DownloadTemplateFrame(wx.Frame, GenericDispatchMixin):
                         
     def write(self, *args, **kwargs):
         message = "[STDOUT]" + "\n".join(args)
-        threading.Thread(target=self.appendLog, args=(message,)).start()
+        wx.CallAfter(self.appendLog, message)
 
     def appendLog(self, message):
         self.logText.AppendText(message)
@@ -202,32 +202,6 @@ class DownloadTemplateFrame(wx.Frame, GenericDispatchMixin):
             self.t = TRun(self)
             self.t.setDaemon(True)
             self.t.start()
-            self.t.join()
-            print "End to download web template"
-            
-            if self.isCopyToTomcat:
-                print "Begin to copy template to tomcat ..."
-                try:
-                    clientdir = os.path.join(self.TOMCAT_HOME, r"webapps\np\clients", self.instanceName)
-                    if os.path.exists(clientdir):
-                        shutil.rmtree(clientdir)
-                    os.makedirs(clientdir)
-                    shutil.copytree("temp/result/", clientdir)
-                except:
-                    print "[ERROR] Copy template to tomcat failed. From %s to %s" % ("temp/result/", clientdir)
-                print "End to copy template to tomcat"
-            
-            if self.isAddDataSource:
-                print "Begin to add datasource ..."
-                try:
-                    mysqlds.mysql_ds_file = os.path.join(self.JBOSS_HOME, r"server\default\deploy\mysql-ds.xml")
-                    mysqlds.add_datasource(self.instanceName, self.dbHost, self.dbPort, self.dbName)
-                except:
-                    print "[ERROR] Add datasource failed."
-                print "End to add datasource"
-            
-            self.MessageBox("Finish!")
-            self.executeBtn.Enable()
         except Exception, e:
             self.executeBtn.Enable()
             print e
@@ -242,6 +216,33 @@ class TRun(threading.Thread):
     def run(self):
         self.dl = UrlDownload(self.caller.siteUrl)
         self.dl.execute()
+        print "End to download web template"
+        
+        if True:
+            if self.caller.isCopyToTomcat:
+                print "Begin to copy template to tomcat ..."
+                try:
+                    clientdir = os.path.join(self.caller.TOMCAT_HOME, r"webapps\np\clients", self.caller.instanceName)
+                    if os.path.exists(clientdir):
+                        shutil.rmtree(clientdir)
+                    os.makedirs(clientdir)
+                    shutil.copytree("temp/result/", clientdir)
+                except:
+                    print "[ERROR] Copy template to tomcat failed. From %s to %s" % ("temp/result/", clientdir)
+                print "End to copy template to tomcat"
+            
+            if self.caller.isAddDataSource:
+                print "Begin to add datasource ..."
+                try:
+                    mysqlds.mysql_ds_file = os.path.join(self.caller.JBOSS_HOME, r"server\default\deploy\mysql-ds.xml")
+                    mysqlds.add_datasource(self.caller.instanceName, self.caller.dbHost, self.caller.dbPort, self.caller.dbName)
+                except:
+                    print "[ERROR] Add datasource failed."
+                print "End to add datasource"
+            
+            self.caller.MessageBox("Finish!")
+            self.caller.executeBtn.Enable()
+        
 
 
 class DownloadTemplateApp(wx.App):
