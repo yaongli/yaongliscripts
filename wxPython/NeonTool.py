@@ -11,28 +11,18 @@ import Queue
 import traceback
 from wxPython.wx import *
 from wxPython.lib import newevent
+import time
 #avoid Encoding Problem
 reload(sys)
 sys.setdefaultencoding('utf-8')  
 
 DispatchEvent, EVT_DISPATCH = newevent.NewEvent()
 
-class GenericDispatchMixin:
-    def __init__(self):
-        EVT_DISPATCH(self, self.OnDispatchEvent)
-
-    def OnDispatchEvent(self, event):
-        event.method(*event.arguments)
-
-    def ThreadSafeDispatch(self, method, *arguments):
-        wxPostEvent(self, DispatchEvent(method = method, arguments = arguments))
-
-class DownloadTemplateFrame(wx.Frame, GenericDispatchMixin):
+class DownloadTemplateFrame(wx.Frame):
     def __init__(self, parent):
         wx.Frame.__init__(self, id=wx.NewId(), name='DownloadTemplateFrame', parent=parent,
               size=wx.Size(460, 600),
               style=wx.DEFAULT_FRAME_STYLE, title='Download Template')
-        GenericDispatchMixin.__init__(self)
 
         self.panel = wx.Panel(id=wx.NewId(), name='panel', parent=self,
               pos=wx.Point(0, 0), size=wx.Size(-1, -1),
@@ -135,7 +125,7 @@ class DownloadTemplateFrame(wx.Frame, GenericDispatchMixin):
                         size=(400, 150), style=wx.TE_MULTILINE|wx.HSCROLL|wx.TE_RICH2|wx.HSCROLL)
                         
     def write(self, *args, **kwargs):
-        message = "[STDOUT]" + "\n".join(args)
+        message = "".join(args)
         wx.CallAfter(self.appendLog, message)
 
     def appendLog(self, message):
@@ -183,22 +173,22 @@ class DownloadTemplateFrame(wx.Frame, GenericDispatchMixin):
         return True
 
     def PrintValue(self):
-        print self.siteUrl 
-        print self.instanceName 
-        print self.isCopyToTomcat 
-        print self.isAddDataSource 
-        print self.TOMCAT_HOME 
-        print self.JBOSS_HOME 
-        print self.dbName 
-        print self.dbHost 
-        print self.dbPort
+        print "siteUrl=", self.siteUrl 
+        print "instanceName=", self.instanceName 
+        print "isCopyToTomcat=", self.isCopyToTomcat 
+        print "isAddDataSource=", self.isAddDataSource 
+        print "TOMCAT_HOME=", self.TOMCAT_HOME 
+        print "JBOSS_HOME=", self.JBOSS_HOME 
+        print "dbName=", self.dbName 
+        print "dbHost=", self.dbHost 
+        print "dbPort=", self.dbPort
 
     def OnDownload(self, evt):
         if not self.GetValue():
             return
         try:
             self.executeBtn.Disable()
-            print "Begin to download web template ..."
+            self.starttime = time.clock()
             self.t = TRun(self)
             self.t.setDaemon(True)
             self.t.start()
@@ -206,7 +196,14 @@ class DownloadTemplateFrame(wx.Frame, GenericDispatchMixin):
             self.executeBtn.Enable()
             print e
             self.MessageBox("Failed! Some errors occur." + e.message)
-            
+    
+    def OnFinish(self):
+        usetime = time.clock() - self.starttime
+        print "Used time [%s]s" % usetime
+        self.MessageBox("Finish! Used time [%s]s" % usetime)
+        self.executeBtn.Enable()
+        
+
 class TRun(threading.Thread):
     def __init__(self, caller):
         threading.Thread.__init__(self)
@@ -214,37 +211,37 @@ class TRun(threading.Thread):
         self.flag = True
 
     def run(self):
+        print "Begin to download web template ..."
         self.dl = UrlDownload(self.caller.siteUrl)
         self.dl.execute()
         print "End to download web template"
         
-        if True:
-            if self.caller.isCopyToTomcat:
-                print "Begin to copy template to tomcat ..."
-                try:
-                    clientdir = os.path.join(self.caller.TOMCAT_HOME, r"webapps\np\clients", self.caller.instanceName)
-                    if os.path.exists(clientdir):
-                        shutil.rmtree(clientdir)
-                    os.makedirs(clientdir)
-                    shutil.copytree("temp/result/", clientdir)
-                except:
-                    print "[ERROR] Copy template to tomcat failed. From %s to %s" % ("temp/result/", clientdir)
-                print "End to copy template to tomcat"
-            
-            if self.caller.isAddDataSource:
-                print "Begin to add datasource ..."
-                try:
-                    mysqlds.mysql_ds_file = os.path.join(self.caller.JBOSS_HOME, r"server\default\deploy\mysql-ds.xml")
-                    mysqlds.add_datasource(self.caller.instanceName, self.caller.dbHost, self.caller.dbPort, self.caller.dbName)
-                except:
-                    print "[ERROR] Add datasource failed."
-                print "End to add datasource"
-            
-            self.caller.MessageBox("Finish!")
-            self.caller.executeBtn.Enable()
+        if self.caller.isCopyToTomcat:
+            print "Begin to copy template to tomcat ..."
+            try:
+                clientdir = os.path.join(self.caller.TOMCAT_HOME, r"webapps\np\clients", self.caller.instanceName)
+                if os.path.exists(clientdir):
+                    shutil.rmtree(clientdir)
+                os.makedirs(clientdir)
+                shutil.copytree("temp/result/", clientdir)
+            except:
+                print "[ERROR] Copy template to tomcat failed. From %s to %s" % ("temp/result/", clientdir)
+            print "End to copy template to tomcat"
         
-
-
+        if self.caller.isAddDataSource:
+            print "Begin to add datasource ..."
+            try:
+                mysqlds.mysql_ds_file = os.path.join(self.caller.JBOSS_HOME, r"server\default\deploy\mysql-ds.xml")
+                mysqlds.add_datasource(self.caller.instanceName, self.caller.dbHost, self.caller.dbPort, self.caller.dbName)
+            except:
+                print "[ERROR] Add datasource failed."
+            print "End to add datasource"
+        
+        print "======================================"
+        print "Finish."
+        print "======================================"
+        wx.CallAfter(self.caller.OnFinish)
+            
 class DownloadTemplateApp(wx.App):
     def __init__(self, redirect=True, filename=None):
         wx.App.__init__(self, redirect, filename)

@@ -15,7 +15,7 @@ options = {"py2exe":{
            }
 setup(
     options = options,
-    zipfile = zipfile,
+    zipfile = None,
     name = "Download Template",
     description = "Neon Tool",
     windows=[

@@ -11,6 +11,7 @@ from Queue import Queue
 import os
 import glob
 import threading
+from threading import Thread
 import time
 import signal
 from contextlib import contextmanager
@@ -135,11 +136,9 @@ class UrlDownload(object):
             print "No javascript file need to be download"
             return content
         
-        reslist = []
-        for url in urllist:
-            (url, localfilename) = self.downtofolder(url, self.resdir + "/js")
-            if url != None:
-                reslist.append((url, localfilename))
+        if not os.path.exists(self.resdir + "/js"):
+            os.makedirs(self.resdir + "/js")
+        reslist = self.batchDownload(urllist, self.resdir + "/js")
         
         content = self.replace(content, reslist)
         self.copyrestree("js")
@@ -150,12 +149,9 @@ class UrlDownload(object):
         if len(urllist) == 0:
             print "No css file need to be download"
             return content
-        
-        reslist = []
-        for url in urllist:
-            (url, localfilename) = self.downtofolder(url, self.resdir + "/css")
-            if url != None:
-                reslist.append((url, localfilename))
+        if not os.path.exists(self.resdir + "/css"):
+            os.makedirs(self.resdir + "/css")
+        reslist = self.batchDownload(urllist, self.resdir + "/css")
         
         content = self.replace(content, reslist)
         for (cssurl, cssfile) in reslist:
@@ -213,15 +209,31 @@ class UrlDownload(object):
             print "No image file need to be download"
             return content
         
-        reslist = []
-        for url in urllist:
-            (url, localfilename) = self.downtofolder(url, self.resdir + "/images")
-            if url != None:
-                reslist.append((url, localfilename))
+        if not os.path.exists(self.resdir + "/images"):
+            os.makedirs(self.resdir + "/images")
+        reslist = self.batchDownload(urllist, self.resdir + "/images")
         
         content = self.replace(content, reslist)
         self.copyrestree("images")
         return content
+    
+    def singleDownload(self, url, destFolder, resultList):
+        (url, localfilename) = self.downtofolder(url, destFolder)
+        if url != None:
+            resultList.append((url, localfilename))
+    
+    def batchDownload(self, urllist, destFolder):
+        resultList = []
+        threads = []
+        for url in urllist:
+            t = Thread(None,self.singleDownload,None,(url, destFolder, resultList))
+            threads.append(t)
+            t.start()
+            
+        for t in threads:
+            t.join()
+        
+        return resultList
 
     def parseImagesUrl(self, content):
         #<img src="http://ecsonline.org/wp-content/uploads/2012/08/logo-ecs.png" alt="Environmental Charter Schools" />
@@ -233,6 +245,10 @@ class UrlDownload(object):
                    r"""data-src=[\'\"](.*?\.jpeg)[\'\"]""",  
                    r"""data-src=[\'\"](.*?\.png)[\'\"]""", 
                    r"""data-src=[\'\"](.*?\.gif)[\'\"]""",
+                   r"""rel=[\'\"](.*?\.jpg)[\'\"]""",
+                   r"""rel=[\'\"](.*?\.jpeg)[\'\"]""",  
+                   r"""rel=[\'\"](.*?\.png)[\'\"]""", 
+                   r"""rel=[\'\"](.*?\.gif)[\'\"]""",
                    r"""background=[\'\"](.*?\.jpg)[\'\"]""",
                    r"""background=[\'\"](.*?\.jpeg)[\'\"]""",  
                    r"""background=[\'\"](.*?\.png)[\'\"]""", 
