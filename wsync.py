@@ -43,6 +43,8 @@ class UrlDownload(object):
     def __init__(self, targetUrl):
         if not targetUrl.startswith("http"):
             targetUrl = "http://" + targetUrl
+        if targetUrl.find("/", 10) < 0:
+            targetUrl = targetUrl + "/"
         self.targetUrl = targetUrl
         self.domainUrl = targetUrl[0: targetUrl.find("/", 10)] #https://mail.google.com/mail/#inbox  excludes // after http
         self.targetDir = targetUrl[0: targetUrl.rfind("/")]

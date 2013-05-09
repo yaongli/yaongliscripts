@@ -43,12 +43,16 @@ class UrlDownload(object):
     def __init__(self, targetUrl):
         if not targetUrl.startswith("http"):
             targetUrl = "http://" + targetUrl
+        if targetUrl.find("/", 10) < 0:
+            targetUrl = targetUrl + "/"
         self.targetUrl = targetUrl
         self.domainUrl = targetUrl[0: targetUrl.find("/", 10)] #https://mail.google.com/mail/#inbox  excludes // after http
         self.targetDir = targetUrl[0: targetUrl.rfind("/")]
+        print "self.targetUrl=%s, self.domainUrl=%s, self.targetDir=%s" % (self.targetUrl, self.domainUrl, self.targetDir)
         self.folder = "temp"
         self.orginFolder = self.folder + "/download"
         self.resultFolder =self.folder + "/result"
+        self.resultPath = os.path.join(os.path.abspath(WORKDIR), self.resultFolder) 
         if os.path.exists(self.folder):
             shutil.rmtree(self.folder)
         self.mkdir(self.folder)
@@ -131,7 +135,8 @@ class UrlDownload(object):
         return content
         
     def down4js(self, content):
-        urllist = re.findall(r"""<script.*?src=[\"\'](.*?)[\"\'].*?>""", content, flags=re.I|re.M)
+        print "Begin to download js ..."
+        urllist = re.findall(r"""<script[^>]*?src=[\"\']([^<>]*?)[\"\'].*?>""", content, flags=re.I|re.M)
         if len(urllist) == 0:
             print "No javascript file need to be download"
             return content
@@ -139,12 +144,13 @@ class UrlDownload(object):
         if not os.path.exists(self.orginFolder + "/" +self.resdir + "/js"):
             os.makedirs(self.orginFolder + "/" +self.resdir + "/js")
         reslist = self.batchDownload(urllist, self.resdir + "/js")
-        
+        print "End to download js."
         content = self.replace(content, reslist)
         self.copyrestree("js")
         return content
 
     def down4css(self, content):
+        print "Begin to download css ..."
         urllist = self.parseCssUrl(content)
         if len(urllist) == 0:
             print "No css file need to be download"
@@ -152,7 +158,7 @@ class UrlDownload(object):
         if not os.path.exists(self.orginFolder + "/" +self.resdir + "/css"):
             os.makedirs(self.orginFolder + "/" +self.resdir + "/css")
         reslist = self.batchDownload(urllist, self.resdir + "/css")
-        
+        print "End to download css."
         content = self.replace(content, reslist)
         for (cssurl, cssfile) in reslist:
             self.handle4css(cssurl, cssfile)
@@ -204,6 +210,7 @@ class UrlDownload(object):
         self.writeFile(self.resultFolder + "/" + cssfile, content)
 
     def down4img(self, content):
+        print "Begin to download images..."
         urllist = self.parseImagesUrl(content)
         if len(urllist) == 0:
             print "No image file need to be download"
@@ -213,6 +220,7 @@ class UrlDownload(object):
             os.makedirs(self.orginFolder + "/" +self.resdir + "/images")
         reslist = self.batchDownload(urllist, self.resdir + "/images")
         
+        print "End to download images."
         content = self.replace(content, reslist)
         self.copyrestree("images")
         return content
@@ -342,6 +350,7 @@ class UrlDownload(object):
         
         if not url.startswith("http"):
             url = urlparse.urljoin(self.targetDir, url)
+            print "self.targetDir=%s, original_url=%s, url=%s, filename=%s, param=%s" % (self.targetDir, original_url, url, filename, param)
         return (original_url, url, filename, param)
 
 def main():
