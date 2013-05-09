@@ -136,8 +136,8 @@ class UrlDownload(object):
             print "No javascript file need to be download"
             return content
         
-        if not os.path.exists(self.resdir + "/js"):
-            os.makedirs(self.resdir + "/js")
+        if not os.path.exists(self.orginFolder + "/" +self.resdir + "/js"):
+            os.makedirs(self.orginFolder + "/" +self.resdir + "/js")
         reslist = self.batchDownload(urllist, self.resdir + "/js")
         
         content = self.replace(content, reslist)
@@ -149,8 +149,8 @@ class UrlDownload(object):
         if len(urllist) == 0:
             print "No css file need to be download"
             return content
-        if not os.path.exists(self.resdir + "/css"):
-            os.makedirs(self.resdir + "/css")
+        if not os.path.exists(self.orginFolder + "/" +self.resdir + "/css"):
+            os.makedirs(self.orginFolder + "/" +self.resdir + "/css")
         reslist = self.batchDownload(urllist, self.resdir + "/css")
         
         content = self.replace(content, reslist)
@@ -209,8 +209,8 @@ class UrlDownload(object):
             print "No image file need to be download"
             return content
         
-        if not os.path.exists(self.resdir + "/images"):
-            os.makedirs(self.resdir + "/images")
+        if not os.path.exists(self.orginFolder + "/" +self.resdir + "/images"):
+            os.makedirs(self.orginFolder + "/" +self.resdir + "/images")
         reslist = self.batchDownload(urllist, self.resdir + "/images")
         
         content = self.replace(content, reslist)

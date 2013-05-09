@@ -21,6 +21,101 @@ DispatchEvent, EVT_DISPATCH = newevent.NewEvent()
 class DownloadTemplateFrame(wx.Frame):
     def __init__(self, parent):
         wx.Frame.__init__(self, id=wx.NewId(), name='DownloadTemplateFrame', parent=parent,
+              size=wx.Size(540, 600),
+              style=wx.DEFAULT_FRAME_STYLE, title='Download Template')
+              
+        self.panel = panel = wx.Panel(self, -1)
+        vbox = wx.BoxSizer(wx.VERTICAL)
+        
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+        siteLabel = wx.StaticText(panel, label="Instance Name:   ")
+        hbox.Add(siteLabel,flag=wx.RIGHT, border=8)
+        self.instanceText = wx.TextCtrl(panel, size=wx.Size(100, -1))
+        self.instanceText.SetToolTipString('Instance name in NEONCRM, (eg. test)')
+        hbox.Add(self.instanceText)
+        vbox.Add(hbox, flag=wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, border=10)
+        vbox.Add((-1, 10))
+        
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+        siteLabel = wx.StaticText(panel, label="Site URL:         ")
+        hbox.Add(siteLabel,flag=wx.RIGHT, border=18)
+        self.siteurlText = wx.TextCtrl(panel, size=wx.Size(300, -1))
+        self.siteurlText.SetToolTipString('Clone template from site (eg. www.example.com/about)')
+        hbox.Add(self.siteurlText)
+        vbox.Add(hbox, flag=wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, border=10)
+        vbox.Add((-1, 10))
+        
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+        self.copyToTomcatCheckbox = wx.CheckBox(self.panel, -1, "Copy template to ${TOMCAT_HOME}\\webapps\\np\\clients\\")
+        self.copyToTomcatCheckbox.SetValue(True)
+        hbox.Add(self.copyToTomcatCheckbox,flag=wx.RIGHT, border=8)
+        vbox.Add(hbox, flag=wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, border=10)
+        vbox.Add((-1, 10))
+        
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+        tomcatHomeLabel = wx.StaticText(panel, label="TOMCAT_HOME: ")
+        hbox.Add(tomcatHomeLabel,flag=wx.RIGHT, border=8)
+        self.tomcatHomeText = wx.TextCtrl(panel, size=wx.Size(300, -1), value='D:\\Develop\\tomcat')
+        hbox.Add(self.tomcatHomeText)
+        vbox.Add(hbox, flag=wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, border=10)
+        vbox.Add((-1, 10))
+        
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+        self.addJbossMysqlDSCheckbox = wx.CheckBox(self.panel, -1, "Add a mysql datasource config in ${JBOSS_HOME}\\server\\default\\deploy\\mysql-ds.xml")
+        self.addJbossMysqlDSCheckbox.SetValue(True)
+        hbox.Add(self.addJbossMysqlDSCheckbox,flag=wx.RIGHT, border=8)
+        vbox.Add(hbox, flag=wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, border=10)
+        vbox.Add((-1, 10))
+        
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+        jbossHomeLabel = wx.StaticText(panel, label="JBOSS_HOME:    ")
+        hbox.Add(jbossHomeLabel,flag=wx.RIGHT, border=8)
+        self.jbossHomeText = wx.TextCtrl(panel, size=wx.Size(300, -1), value='D:\\Develop\\jboss')
+        hbox.Add(self.jbossHomeText)
+        vbox.Add(hbox, flag=wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, border=10)
+        vbox.Add((-1, 10))
+        
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+        dbHomeLabel = wx.StaticText(panel, label="Database name:  ")
+        hbox.Add(dbHomeLabel, flag=wx.RIGHT, border=8)
+        self.dbnameText = wx.TextCtrl(panel, size=wx.Size(100, -1), value='')
+        hbox.Add(self.dbnameText)
+        vbox.Add(hbox, flag=wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, border=10)
+        vbox.Add((-1, 10))
+        
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+        dbHostLabel = wx.StaticText(panel, label="Database host:   ")
+        hbox.Add(dbHostLabel, flag=wx.RIGHT, border=8)
+        dbhostlist = ['localhost', '192.168.1.222', '192.168.1.198']
+        self.dbhostComboBox = wx.ComboBox(self.panel, -1, "localhost",
+            choices=dbhostlist, style=wx.CB_DROPDOWN | wx.TE_PROCESS_ENTER)
+        hbox.Add(self.dbhostComboBox, border=8)
+        dbPortLabel = wx.StaticText(panel, label="    Post: ")
+        hbox.Add(dbPortLabel, flag=wx.RIGHT, border=8)
+        self.dbportText = wx.TextCtrl(panel, size=wx.Size(100, -1), value='3306')
+        hbox.Add(self.dbportText)
+        vbox.Add(hbox, flag=wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, border=10)
+        vbox.Add((-1, 10))
+        
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+        self.executeBtn = wx.Button(panel, label='Start Download', style=0)
+        self.Bind(wx.EVT_BUTTON, self.OnDownload, self.executeBtn)
+        hbox.Add(self.executeBtn, )
+        vbox.Add(hbox, flag=wx.ALIGN_CENTER, border=10)
+        vbox.Add((-1, 10))
+        
+        hbox = wx.BoxSizer(wx.HORIZONTAL)
+        self.logText = wx.TextCtrl(self.panel, -1, "",
+                        size=(-1, -1), style=wx.TE_MULTILINE|wx.HSCROLL|wx.TE_RICH2|wx.HSCROLL)
+        hbox.Add(self.logText, flag=wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, proportion=1, border=10)
+        vbox.Add(hbox, flag=wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, proportion=1)
+        vbox.Add((-1, 10))
+        
+        panel.SetSizerAndFit(vbox)
+        
+        
+    def __init1__(self, parent):
+        wx.Frame.__init__(self, id=wx.NewId(), name='DownloadTemplateFrame', parent=parent,
               size=wx.Size(460, 600),
               style=wx.DEFAULT_FRAME_STYLE, title='Download Template')
 
