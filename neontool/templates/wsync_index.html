@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %} - 登录{% endblock %}
+{% block content %}
+  <div id="login" class="narrow">
+    <form action="" method="post">
+      {% csrf_token %}
+      <p>
+        {{ form.email.errors }}
+        <label>{{ form.email.label }}</label>
+        {{ form.email }}
+        <span class="hint"></span>
+      </p>
+      <p>
+        {{ form.password.errors }}
+        <label>{{ form.password.label }}</label>
+        {{ form.password }}
+      </p>
+      <span class="hint"></span>
+      <p>
+        {{ form.remember.errors }}
+        {{ form.remember }} <label style="display:inline">{{ form.remember.label }}</label>
+        
+      </p>
+      <span class="hint"></span>
+      {{ form.non_field_errors }}
+      <input type="text" name="captcha" style="display:none">
+      <input type="submit" class="btn btn-primary" value="登录" tabindex="3"/>
+      <a href="/" class="btn" tabindex="4">取消</a>
+    </form>
+  </div>
+{% endblock %}

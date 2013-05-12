@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %} - 注册{% endblock %}
+{% block content %}
+<div id="signup" class="narrow">
+	<form action="" method="post">
+	  {% csrf_token %}
+	  <p>
+		{{ form.email.errors }}
+		<label>{{ form.email.label }}</label>
+		{{ form.email }}
+		<span class="hint">推荐使用Gmail邮箱</span>
+	  </p>
+	  <p>
+		{{ form.password1.errors }}
+		<label>{{ form.password1.label }}</label>
+		{{ form.password1 }}
+	  </p>
+	  <p>
+		{{ form.password2.errors }}
+		<label>{{ form.password2.label }}</label>
+		{{ form.password2 }}
+	  </p>
+	  {{ form.non_field_errors }}
+	  <input type="text" name="captcha" style="display:none">
+	  <input type="submit" value="提交注册" tabindex="5"/>
+	</form>
+</div>
+{% endblock %}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>{% load i18n %}{% load staticfiles %}
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8" />
+        <title>{% block title %}{% endblock %}{% trans 'Neon Tool' %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{% static "css/bootstrap.css" %}" rel="stylesheet">
+        <link href="{% static "css/bootstrap-responsive.css" %}" rel="stylesheet">
+        <style>
+            .pull-center{text-align: center;}
+        </style>
+        <!--[if lt IE 9]>
+            <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        {% block css %}{% endblock %}
+        <link rel="shortcut icon" type="image/x-icon" href="{{ settings.STATIC_URL }}favicon.ico" />
+    </head>
+    <body data-spy="scroll" data-target=".subnav">
+        <!-- Navbar ================================================== -->
+        <div class="header navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                     <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                     </a>
+                    <a class="brand" href="/">{% trans 'Neon Tool' %}</a>
+                    <div class="nav-collapse">
+                    <ul class="nav nav-pills">
+                        <li class="index {% block index-menu %}{% endblock %}"><a href="{% url home %}">{% trans 'Home' %}</a></li>
+
+                        {% if not user.is_authenticated %}
+                        <li class="login {% block login-menu %}{% endblock %}"><a href="{% url signin %}">{% trans 'Sign In' %}</a></li>
+                        <li class="register {% block register-menu %}{% endblock %}"><a href="{% url signup %}">{% trans 'Sign Up' %}</a></li>
+                        {% else %}
+                        <li class="list {% block wsync-menu %}{% endblock %}"><a href="/wsync/">{% trans 'Web Template Build' %}</a></li>
+
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" ><b>{{ user.username }}</b><b class="caret"></b></a>
+                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu">
+                              <li><a href="{% url change_passwd %}">{% trans 'Change Password' %}</a></li>
+                              <li class="divider"></li>
+                              <li><a href="{% url signout %}">{% trans 'Sign Out' %}</a></li>
+                            </ul>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Container ================================================== -->
+        <div class="clear">&nbsp;</div>
+        <div class="clear">&nbsp;</div>
+        <br/><br/><br/>
+        <div class="container" >
+            <div class="row">
+            <div class="span10 offset1" >
+            <!-- content ================================================== -->
+            {% block content %}{% endblock %}
+            </div>
+            </div>
+
+            <div class="span10 offset1">
+            <!-- footbar ================================================== -->
+            {% block sidebar %}
+            
+            {% endblock %}
+            </div>
+            
+            <!-- Footer ================================================== -->
+            <div class="divider">&nbsp;</div>
+            <div class="clear">&nbsp;</div>
+            <br/><br/><br/>
+            <footer class="footer">
+                <div class="container">
+                    <div class="page-header">
+                    </div>
+                    <div class="row">
+                    <p class="span4 offset2">&copy; Company 2012</p> 
+                    <p class="span2 offset2 pull-right"><a href="#">Top</a></p>
+                    </div>
+                </div>
+            </footer>
+          
+        </div><!-- /container -->
+        
+        <script src="{{ settings.STATIC_URL }}js/jquery.min.js"></script>
+        <script src="{{ settings.STATIC_URL }}js/bootstrap.js"></script>
+        {% block js %}{% endblock %}
+    </body>
+</html>
