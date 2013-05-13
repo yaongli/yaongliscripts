@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Django settings for neontool project.
 
 ######################################
@@ -6,6 +7,8 @@ import posixpath
 
 ROOT_DIR = posixpath.dirname(__file__)
 CONTEXT_PATH = "" # "/subpath"
+
+WSYNC_RESULT_DIR = posixpath.abspath(posixpath.join(ROOT_DIR, 'temp'))
 
 ######################################
 DEBUG = True
@@ -32,7 +35,7 @@ DATABASES = {
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'China/Shanghai'
+TIME_ZONE = 'Asia/Chongqing'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html

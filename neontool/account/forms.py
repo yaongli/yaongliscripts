@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 
 class SignupForm(forms.Form):
-    email = forms.EmailField(label=u'email', required=True, widget=forms.TextInput(attrs={'tabindex': '1', "class" : "span4"}))
+    email = forms.EmailField(label=u'Email', required=True, widget=forms.TextInput(attrs={'tabindex': '1', "class" : "span4"}))
     nickname = forms.CharField(label=u'昵称', required=False, max_length=30, widget=forms.TextInput(attrs={'tabindex': '2', "class" : "span4"}))
     password1 = forms.CharField(label=u'密码', required=True, widget=forms.PasswordInput(render_value=False, attrs={'tabindex': '3', "class" : "span4"}))
     password2 = forms.CharField(label=u'重复密码', widget=forms.PasswordInput(render_value=False, attrs={'tabindex': '4', "class" : "span4"}))
@@ -59,7 +59,7 @@ class SignupForm(forms.Form):
         return True
     
 class LoginForm(forms.Form):
-    email = forms.EmailField(label=u'email', required=True, widget=forms.TextInput(attrs={'tabindex': '1'}))
+    email = forms.EmailField(label=u'Email', required=True, widget=forms.TextInput(attrs={'tabindex': '1'}))
     password = forms.CharField(label=u'密码', required=True, widget=forms.PasswordInput(render_value=False, attrs={'tabindex': '2'}))
     remember = forms.BooleanField(label=u'记住登陆信息', help_text=u'如果选择记住登陆信息，会保留登陆信息2周', required = False, widget=forms.CheckboxInput(attrs={'tabindex': '3'}))
     

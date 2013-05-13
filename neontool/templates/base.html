@@ -2,10 +2,14 @@
 <html lang="zh-CN">
     <head>
         <meta charset="utf-8" />
-        <title>{% block title %}{% endblock %}{% trans 'Neon Tool' %}</title>
+        <title>{% trans 'Neon Tool' %} {% block title %}{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="{% static "css/bootstrap.css" %}" rel="stylesheet">
-        <link href="{% static "css/bootstrap-responsive.css" %}" rel="stylesheet">
+        <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet"/>
+        <link href="{% static 'css/bootstrap-responsive.css' %}" rel="stylesheet"/>
+        <script src='{% static "js/jquery.min.js" %}'></script>
+        <script src='{% static "js/bootstrap.js" %}'></script>
+        {% block js %}{% endblock %}
+        
         <style>
             .pull-center{text-align: center;}
         </style>
@@ -13,7 +17,7 @@
             <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
         {% block css %}{% endblock %}
-        <link rel="shortcut icon" type="image/x-icon" href="{{ settings.STATIC_URL }}favicon.ico" />
+        <link rel="shortcut icon" type="image/x-icon" href='{% static "favicon.ico" %}' />
     </head>
     <body data-spy="scroll" data-target=".subnav">
         <!-- Navbar ================================================== -->
@@ -79,16 +83,12 @@
                     <div class="page-header">
                     </div>
                     <div class="row">
-                    <p class="span4 offset2">&copy; Company 2012</p> 
+                    <p class="span4 offset2">&copy; Neon 2013</p> 
                     <p class="span2 offset2 pull-right"><a href="#">Top</a></p>
                     </div>
                 </div>
             </footer>
           
         </div><!-- /container -->
-        
-        <script src="{{ settings.STATIC_URL }}js/jquery.min.js"></script>
-        <script src="{{ settings.STATIC_URL }}js/bootstrap.js"></script>
-        {% block js %}{% endblock %}
     </body>
 </html>

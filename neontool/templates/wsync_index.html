@@ -1,31 +1,61 @@
-{% extends "base.html" %}
-{% block title %} - 登录{% endblock %}
+{% extends "base.html" %}{% load staticfiles %}
+{% block title %} - Web Template Builder{% endblock %}
 {% block content %}
-  <div id="login" class="narrow">
+<script>
+/*
+$(function(){
+$('#prosessingModal').modal({
+        backdrop: 'static',
+        keyboard: false,
+        show: true
+    });
+});*/
+
+function doSubmit(){
+    
+    $('#prosessingModal').modal({
+        backdrop: 'static',
+        keyboard: false,
+        show: true
+    });
+    
+    return true;
+}
+
+</script>
+  <div id="wsync" class="narrow">
     <form action="" method="post">
       {% csrf_token %}
       <p>
-        {{ form.email.errors }}
-        <label>{{ form.email.label }}</label>
-        {{ form.email }}
+        {{ form.instance.errors }}
+        <label>{{ form.instance.label }}</label>
+        {{ form.instance }}
         <span class="hint"></span>
       </p>
       <p>
-        {{ form.password.errors }}
-        <label>{{ form.password.label }}</label>
-        {{ form.password }}
+        {{ form.site_url.errors }}
+        <label>{{ form.site_url.label }}</label>
+        {{ form.site_url }}
       </p>
       <span class="hint"></span>
-      <p>
-        {{ form.remember.errors }}
-        {{ form.remember }} <label style="display:inline">{{ form.remember.label }}</label>
-        
-      </p>
-      <span class="hint"></span>
+      
       {{ form.non_field_errors }}
-      <input type="text" name="captcha" style="display:none">
-      <input type="submit" class="btn btn-primary" value="登录" tabindex="3"/>
-      <a href="/" class="btn" tabindex="4">取消</a>
+
+      <input type="submit" class="btn btn-primary" onclick="return doSubmit()" value="Submit" tabindex="3"/>
+      <a href="/" class="btn" tabindex="4">Cancel</a>
     </form>
   </div>
+  
+  <div class="modal hide fade" id="prosessingModal">
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal"></a>
+        <h3>Prosessing ....</h3>
+      </div>
+      <div class="modal-body">
+        <p style="float:left"><img src="{% static 'img/inProgress.gif' %}" style="width:60px; height:60px"/></p>
+        <p></p>
+        <p>Downloading web page template from the web site. 
+        <p>Please wait a moment.</p>
+      </div>
+    </div>
 {% endblock %}
